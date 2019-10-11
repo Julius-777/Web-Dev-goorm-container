@@ -1,0 +1,11 @@
+<h1>
+	 RESULTS PAGE !!
+</h1>
+
+
+<% for (i = 0; i < data['Search'].length; i++) { %>
+	<!-- Display movie info -->
+	<li> Movie: <%= data['Search'][i]["Title"] %> - <b> YEAR: <%= data['Search'][i]["Year"]%> </b> </li>
+<% } %>
+
+<a href="https://web-dev-container-julius.run.goorm.io/"> Search Again </a>

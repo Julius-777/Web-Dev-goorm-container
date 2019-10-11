@@ -1,0 +1,14 @@
+{
+  "name": "routing-exercises",
+  "version": "1.0.0",
+  "description": "creating our routing app with node express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julius Miyumo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
