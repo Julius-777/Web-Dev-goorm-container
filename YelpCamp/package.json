@@ -1,0 +1,19 @@
+{
+  "name": "yelp-camp",
+  "version": "1.0.0",
+  "description": "yelp camp project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Julius-777/Web-Dev-goorm-container/YelpCamp.git"
+  },
+  "author": "Julius Miyumo",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.7.1",
+    "express": "^4.17.1"
+  }
+}
