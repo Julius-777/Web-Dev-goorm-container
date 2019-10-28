@@ -1,0 +1,16 @@
+<% include ./partials/header.ejs %>
+<div class="ui main container">
+	
+	<h1> A Blog about Tech </h1>
+
+	<% blogs.forEach(function(blog) { %>
+		<div> 
+			<h2> <%= blog.title %> </h2>
+			<img src="<%=blog.image%>">
+			<span> Posted On: <%= blog.created %>)</span>
+			<p><%= blog.body %> </p>
+			<a href="/blogs/<%= blog._id%>">Read more</a>
+		</div>
+	<% }) %>;
+</div>
+<% include ./partials/footer.ejs %>
