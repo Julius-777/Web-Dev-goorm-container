@@ -7,10 +7,10 @@
 		<div> 
 			<h2> <%= blog.title %> </h2>
 			<img src="<%=blog.image%>">
-			<span> Posted On: <%= blog.created %>)</span>
-			<p><%= blog.body %> </p>
+			<p> <strong><%= blog.created.toDateString() %></strong></p>
+			<p><%= blog.body.substring(0, 100)%>...</p>
 			<a href="/blogs/<%= blog._id%>">Read more</a>
 		</div>
-	<% }) %>;
+	<% }); %>
 </div>
 <% include ./partials/footer.ejs %>

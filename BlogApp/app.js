@@ -1,7 +1,8 @@
 var express = require("express"),
 	mongoose = require("mongoose"),
 	bodyParser = require("body-parser"),
-	app = express();
+	app = express(),
+	methodOverride = require("method-override");
 var PORT = 3000;
 
 mongoose.connect("mongodb://localhost/RESTful_BlogApp", {useNewUrlParser : true, useUnifiedTopology: true});
@@ -11,7 +12,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public")); 
 // body
 app.use(bodyParser.urlencoded({extended: true}));
-
+app.use(methodOverride("_method"));
 // Setup & config Database
 var BlogSchema = new mongoose.Schema(
 	{
@@ -52,7 +53,7 @@ app.get("/blogs", function(req, res) {
 	})	
 });	
 
-// NEW - Display Form for 	creating new blog post (GET)
+// NEW - Display Form for creating new blog post (GET)
 app.get("/blogs/new", (req, res) => res.render("new"));
 
 //CREATE - Create new blog post and redirect to blog list (POST)	
@@ -67,7 +68,7 @@ app.post("/blogs", function(req, res) {
 	});
 });
 
-// SHOW - show specific blog by id
+// SHOW - show specific blog by id (GET)
 app.get("/blogs/:id", function(req, res) {
 	Blog.findById(req.params.id, function(err, foundBlog) {
 		if (err) {
@@ -75,6 +76,42 @@ app.get("/blogs/:id", function(req, res) {
 		}else {
 			res.render("show", {blog: foundBlog});
 		}
-	})
+	});
 });
+
+//EDIT - show edit form for a single blog post (GET)
+app.get("/blogs/:id/edit", function(req, res) {
+	Blog.findById(req.params.id, function(err, foundBlog) {
+		if (err) {
+			res.redirect("/blogs");
+		}else {
+			res.render("edit", {blog: foundBlog});
+		}
+	});
+});
+
+//UPDATE - 	update existing blog post (PUT)
+app.put("/blogs/:id", function(req, res) {
+	res.send("UPDATE!!");
+	 Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
+	 	if (err) {
+	 		res.redirect("/index");
+		}else {
+	 		res.redirect("/blogs/" + req.params.id);
+	 	}
+	 });
+});
+
+// DELETE - route deletes existing blog
+app.delete("/blogs/:id", function(req, res) {
+	Blog.findByIdAndRemove(req.params.id, function(err) {
+	 	if (err) {
+	 		res.redirect("/index");
+		}else {
+	 		res.redirect("/blogs");
+	 	}
+	 });
+});
+
+// Start Server
 app.listen(PORT, () => console.log("Blog server started ..."));	
