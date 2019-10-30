@@ -1,17 +1,18 @@
 var express = require("express"),
 	mongoose = require("mongoose"),
 	bodyParser = require("body-parser"),
+	expressSanitizer = require("express-sanitizer"),
 	app = express(),
 	methodOverride = require("method-override");
 var PORT = 3000;
 
+//CONFIG APPLICATION
 mongoose.connect("mongodb://localhost/RESTful_BlogApp", {useNewUrlParser : true, useUnifiedTopology: true});
 app.set("view engine", "ejs");
 // Serve static files (images, css, js files). Express looks up the files relative to the static directory
-// Allows loading the files that are in the public directory:
 app.use(express.static("public")); 
-// body
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
 app.use(methodOverride("_method"));
 // Setup & config Database
 var BlogSchema = new mongoose.Schema(
@@ -40,7 +41,7 @@ var Blog = mongoose.model("Blog", BlogSchema );
 		}
 	});
 */
-// RESful ROUTING
+// RESful ROUTING - 7 routes
 
 // INDEX - list all blog posts (GET)
 app.get("/blogs", function(req, res) {
@@ -58,7 +59,7 @@ app.get("/blogs/new", (req, res) => res.render("new"));
 
 //CREATE - Create new blog post and redirect to blog list (POST)	
 app.post("/blogs", function(req, res) {	
-	
+	req.body.blog.body = req.sanitize(req.body.blog.body); //eliminate andy script tags from running JS
 	Blog.create(req.body.blog, function(err, newBlog) {
 		if(err) {
 			res.render("new");
@@ -92,13 +93,13 @@ app.get("/blogs/:id/edit", function(req, res) {
 
 //UPDATE - 	update existing blog post (PUT)
 app.put("/blogs/:id", function(req, res) {
-	res.send("UPDATE!!");
-	 Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
-	 	if (err) {
-	 		res.redirect("/index");
+	req.body.blog.body = req.sanitize(req.body.blog.body);
+	Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
+		if (err) {
+			res.redirect("/index");
 		}else {
-	 		res.redirect("/blogs/" + req.params.id);
-	 	}
+			res.redirect("/blogs/" + req.params.id);
+		}
 	 });
 });
 
